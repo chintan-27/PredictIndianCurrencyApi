@@ -5,6 +5,7 @@ from tensorflow.keras.preprocessing import image
 import PIL
 import numpy as np
 from tensorflow.keras.models import Model, load_model
+import shutil
 
 UPLOAD_FOLDER = '/uploads/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
@@ -54,6 +55,7 @@ def upload_page():
                 link="https://extract-text-image.herokuapp.com/static/uploads/"
                 + file.filename)
             response.headers.add("Access-Control-Allow-Origin", "*")
+            shutil.rmtree("/uploads")
             return response
         else:
             return jsonify(success=False,
