@@ -13,13 +13,13 @@ app = Flask(__name__)
 CORS(app)
 
 class_dictionary = {
-    '10 Rs': 0,
-    '100 Rs': 1,
-    '20 Rs': 2,
-    '200 Rs': 3,
-    '2000 Rs': 4,
-    '50 Rs': 5,
-    '500 Rs': 6
+    '10 Rupees': 0,
+    '100 Rupees': 1,
+    '20 Rupees': 2,
+    '200 Rupees': 3,
+    '2000 Rupees': 4,
+    '50 Rupees': 5,
+    '500 Rupees': 6
 }
 
 
@@ -30,10 +30,10 @@ def allowed_file(filename):
 
 @app.route('/')
 def home_page():
-    return render_template('index.html')
+    return "Hello World"
 
 
-@app.route('/upload', methods=['GET', 'POST'])
+@app.route('/currencydetection', methods=['GET', 'POST'])
 def upload_page():
     if request.method == 'POST':
 
@@ -65,7 +65,7 @@ def upload_page():
 
 def load_image(img_path):
 
-    img = image.load_img(img_path, target_size=(250, 500))
+    img = image.load_img(img_path, target_size=(224, 224))
     img_tensor = image.img_to_array(img)
     img_tensor = np.expand_dims(img_tensor, axis=0)
     img_tensor /= 255.
