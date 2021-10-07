@@ -7,7 +7,8 @@ import numpy as np
 from tensorflow.keras.models import Model, load_model
 import shutil
 
-UPLOAD_FOLDER = '/uploads/'
+# UPLOAD_FOLDER = './uploads/'
+UPLOAD_FOLDER = '.'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
@@ -46,16 +47,13 @@ def upload_page():
             return jsonify(success=False, message="No file selected")
 
         if file and allowed_file(file.filename):
-            file.save(os.path.join(os.getcwd() + UPLOAD_FOLDER, file.filename))
+            file.save(file.filename)
 
-            prediction = predict("uploads/" + file.filename)
-            response = jsonify(
-                success=True,
-                prediction=prediction,
-                link="https://extract-text-image.herokuapp.com/static/uploads/"
-                + file.filename)
+            prediction = predict(file.filename)
+            response = jsonify(success=True, prediction=prediction)
             response.headers.add("Access-Control-Allow-Origin", "*")
-            shutil.rmtree("/uploads")
+            # shutil.rmtree("./uploads/")
+            os.remove(file.filename)
             return response
         else:
             return jsonify(success=False,
@@ -67,7 +65,7 @@ def upload_page():
 
 def load_image(img_path):
 
-    img = image.load_img(img_path, target_size=(224, 224))
+    img = image.load_img(img_path, target_size=(250, 500))
     img_tensor = image.img_to_array(img)
     img_tensor = np.expand_dims(img_tensor, axis=0)
     img_tensor /= 255.
