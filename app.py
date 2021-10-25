@@ -6,6 +6,7 @@ import PIL
 import numpy as np
 from tensorflow.keras.models import Model, load_model
 import shutil
+from blur import test_blurry
 
 # UPLOAD_FOLDER = './uploads/'
 UPLOAD_FOLDER = '.'
@@ -49,6 +50,13 @@ def upload_page():
         if file and allowed_file(file.filename):
             file.save(file.filename)
 
+            check_blur = test_blurry(file.filename)
+            if (check_blur['fm'] > 100):
+                return jsonify(
+                    success=False,
+                    message=
+                    "Image too blurred, click a better image for accurate results",
+                    blur=check_blur)
             prediction = predict(file.filename)
             response = jsonify(success=True, prediction=prediction)
             response.headers.add("Access-Control-Allow-Origin", "*")
