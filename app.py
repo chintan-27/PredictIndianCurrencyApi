@@ -51,7 +51,7 @@ def upload_page():
             file.save(file.filename)
 
             check_blur = test_blurry(file.filename)
-            if (check_blur['fm'] > 5000):
+            if (check_blur['fm'] > 4000):
                 return jsonify(
                     success=False,
                     message=
