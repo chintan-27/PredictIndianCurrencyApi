@@ -58,7 +58,9 @@ def upload_page():
                     "Image too blurred, click a better image for accurate results",
                     blur=check_blur)
             prediction = predict(file.filename)
-            response = jsonify(success=True, prediction=prediction)
+            response = jsonify(success=True,
+                               blur=check_blur,
+                               prediction=prediction)
             response.headers.add("Access-Control-Allow-Origin", "*")
             # shutil.rmtree("./uploads/")
             os.remove(file.filename)
